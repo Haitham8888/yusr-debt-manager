@@ -126,9 +126,13 @@
                 timestamp: new Date().getTime()
             };
 
-            if (await debtService.saveDebt(debt)) {
+            // حفظ مباشرة في localStorage
+            try {
+                const debts = JSON.parse(localStorage.getItem('debts') || '[]');
+                debts.unshift(debt);
+                localStorage.setItem('debts', JSON.stringify(debts));
                 window.location.href = 'index.html?added=true';
-            } else {
+            } catch (error) {
                 alert('حدث خطأ في حفظ البيانات');
             }
         }

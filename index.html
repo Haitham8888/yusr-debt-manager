@@ -141,6 +141,41 @@
         // تحديث مستمر للوقت
         setInterval(updateDateTime, 1000);
         updateDateTime();
+
+        function loadDebts() {
+            const debts = JSON.parse(localStorage.getItem('debts') || '[]');
+            const ledgerList = document.getElementById('ledger-list');
+            const totalDebt = debts.reduce((sum, debt) => sum + parseFloat(debt.amount), 0);
+            
+            // تحديث إجمالي الديون
+            document.querySelector('.status-item strong').textContent = 
+                totalDebt.toLocaleString() + ' ريال';
+            
+            // تحديث القائمة
+            ledgerList.innerHTML = '';
+            debts.forEach(debt => {
+                ledgerList.insertAdjacentHTML('beforeend', `
+                    <li class="fade-in">
+                        <div class="list-item-content">
+                            <span>${debt.name}</span>
+                            <div class="debt-details">
+                                <span class="list-item-amount">${debt.amount} ريال</span>
+                                <span class="debt-date">${debt.date}</span>
+                            </div>
+                        </div>
+                    </li>
+                `);
+            });
+        }
+
+        // تحميل البيانات عند بدء التشغيل
+        document.addEventListener('DOMContentLoaded', loadDebts);
+
+        // تحديث عند إضافة دين جديد
+        if (window.location.search.includes('added=true')) {
+            loadDebts();
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
     </script>
 
     <!-- تحميل الخدمات والسكربتات -->
