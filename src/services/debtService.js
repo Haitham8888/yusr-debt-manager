@@ -22,9 +22,14 @@ class DebtService {
         try {
             const data = this.getAllDebts();
             data.debts.unshift(newDebt);
-            data.totalDebt = (data.totalDebt || 0) + parseInt(newDebt.amount);
+            // تحديث إجمالي الديون
+            data.totalDebt = data.debts.reduce((sum, debt) => sum + parseFloat(debt.amount), 0);
             
             localStorage.setItem('debtsData', JSON.stringify(data));
+            
+            // إرسال حدث للتحديث
+            window.dispatchEvent(new Event('storage'));
+            
             return true;
         } catch (error) {
             console.error('خطأ في حفظ الدين:', error);

@@ -23,21 +23,49 @@
             
             <form id="debtForm" class="add-debt-form" onsubmit="handleSubmit(event)">
                 <div class="form-group">
-                    <label for="debtAmount">المبلغ</label>
-                    <input type="number" id="debtAmount" required placeholder="أدخل المبلغ">
-                    <span class="currency">ريال</span>
+                    <label for="debtorName">
+                        <i class="fas fa-user"></i>
+                        اسم المدين
+                    </label>
+                    <input type="text" 
+                           id="debtorName" 
+                           required
+                           placeholder="أدخل اسم المدين"
+                           autocomplete="off">
+                    <div class="suggestions" id="nameSuggestions">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="debtorName">اسم المدين</label>
-                    <input type="text" id="debtorName" value="هيثم هتان" readonly>
+                    <label for="debtAmount">
+                        <i class="fas fa-money-bill-wave"></i>
+                        المبلغ
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="number" 
+                               id="debtAmount" 
+                               required 
+                               placeholder="أدخل المبلغ"
+                               min="1"
+                               step="any">
+                        <span class="currency">ريال</span>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="debtDate">التاريخ</label>
+                    <label for="debtDate">
+                        <i class="fas fa-calendar-alt"></i>
+                        التاريخ
+                    </label>
                     <input type="date" id="debtDate" required>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn">إضافة الدين</button>
-                    <a href="index.html" class="cancel-btn">إلغاء</a>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-plus"></i>
+                        إضافة الدين
+                    </button>
+                    <a href="index.html" class="cancel-btn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </a>
                 </div>
             </form>
         </div>
@@ -46,8 +74,50 @@
     <script type="module">
         import { debtService } from './services/debtService.js';
 
-        document.getElementById('debtForm').onsubmit = async (e) => {
-            e.preventDefault();
+        document.getElementById('debtDate').valueAsDate = new Date();
+
+        function getExistingNames() {
+            const data = debtService.getAllDebts();
+            if (!data || !data.debts) return new Set();
+            return new Set(data.debts.map(debt => debt.name));
+        }
+
+        const nameInput = document.getElementById('debtorName');
+        const suggestionsList = document.getElementById('nameSuggestions');
+
+        nameInput.addEventListener('input', () => {
+            const value = nameInput.value.trim();
+            const existingNames = Array.from(getExistingNames());
+            
+            const matches = existingNames.filter(name => 
+                name.toLowerCase().includes(value.toLowerCase())
+            );
+
+            suggestionsList.innerHTML = '';
+            if (value && matches.length) {
+                matches.forEach(name => {
+                    const div = document.createElement('div');
+                    div.textContent = name;
+                    div.onclick = () => {
+                        nameInput.value = name;
+                        suggestionsList.innerHTML = '';
+                    };
+                    suggestionsList.appendChild(div);
+                });
+                suggestionsList.style.display = 'block';
+            } else {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nameInput.contains(e.target)) {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        async function handleSubmit(event) {
+            event.preventDefault();
             
             const debt = {
                 name: document.getElementById('debtorName').value,
@@ -56,15 +126,12 @@
                 timestamp: new Date().getTime()
             };
 
-            if (debtService.saveDebt(debt)) {
+            if (await debtService.saveDebt(debt)) {
                 window.location.href = 'index.html?added=true';
             } else {
                 alert('حدث خطأ في حفظ البيانات');
             }
-        };
-
-        // تعيين التاريخ الحالي تلقائياً
-        document.getElementById('debtDate').valueAsDate = new Date();
+        }
     </script>
 </body>
 </html>

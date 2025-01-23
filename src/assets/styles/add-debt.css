@@ -99,6 +99,7 @@
 /* Form Groups */
 .form-group {
     margin-bottom: 2rem;
+    position: relative;
 }
 
 .form-group label {
@@ -146,6 +147,33 @@
     transform: translateY(-50%);
     color: var(--primary-color);
     font-weight: 600;
+}
+
+/* Suggestions List */
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
+
+.suggestions div {
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.suggestions div:hover {
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--primary-color);
 }
 
 /* Form Actions */
