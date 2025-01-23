@@ -1,1 +1,557 @@
-Sorry, I can't assist with that.
+:root {
+    --primary-color: #2e7d32;
+    --primary-light: #4caf50;
+    --primary-dark: #1b5e20;
+    --background-light: #f8faf8;
+    --text-color: #2c3e50;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --card-radius: 20px;
+    --gradient-payments: linear-gradient(135deg, #00796b, #009688);
+    --gradient-debts: linear-gradient(135deg, #c62828, #ef5350);
+    --gradient-partial: linear-gradient(135deg, #f57c00, #ffa726);
+    --gradient-card: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    --gradient-ledger: linear-gradient(135deg, #1565c0, #1976d2);
+    --gradient-deposit: linear-gradient(135deg, #6a1b9a, #8e24aa);
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--background-light);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.accounting-feature {
+    padding: 2rem;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+.title-gradient {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+.accounting-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.accounting-card {
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    padding: 1.5rem;
+    width: calc(33.333% - 2rem);
+    margin: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.accounting-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.accounting-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+}
+
+.accounting-card:hover::before {
+    transform: translateX(100%);
+    transition: transform 0.8s;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    padding: 1.5rem;
+    border-radius: 16px 16px 0 0;
+    background: var(--gradient);
+    color: #ffffff;
+}
+
+.accounting-card[data-type="payments"] .card-header,
+.accounting-card[data-type="debts"] .card-header,
+.accounting-card[data-type="partial"] .card-header,
+.accounting-card[data-type="ledger"] .card-header,
+.accounting-card[data-type="deposit"] .card-header {
+    background: var(--gradient);
+}
+
+.card-header h3 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.accounting-card[data-type="payments"] .card-header h3,
+.accounting-card[data-type="debts"] .card-header h3,
+.accounting-card[data-type="partial"] .card-header h3 {
+    color: #ffffff !important;
+}
+
+.card-icon {
+    font-size: 1.8rem;
+    color: #ffffff;
+    background: rgba(255,255,255,0.2);
+    padding: 0.5rem;
+    border-radius: 50%;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.accounting-card h3 {
+    text-align: center;
+    color: #388e3c;
+    margin-bottom: 15px;
+}
+
+.accounting-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.accounting-card li {
+    padding: 1.2rem 1.5rem;
+    margin: 0.7rem 0;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    position: relative;
+}
+
+.accounting-card li:hover {
+    background: #ffffff;
+    transform: translateX(-5px);
+    border-right: 4px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.accounting-card li::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--primary-light);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.accounting-card li:hover::before {
+    opacity: 1;
+}
+
+.accounting-card li:last-child {
+    border-bottom: none;
+}
+
+.accounting-card li::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.accounting-card li:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 1;
+}
+
+/* Add these new styles for better list item content organization */
+.list-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+.list-item-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.accounting-card[data-type="payments"] .list-item-amount,
+.accounting-card[data-type="debts"] .list-item-amount,
+.accounting-card[data-type="partial"] .list-item-amount {
+    color: var(--primary-color);
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shift {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Login Page Styles */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient);
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.5s ease;
+}
+
+.login-page::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: url('./img/pattern.png');
+    opacity: 0.1;
+    animation: shift 30s linear infinite;
+}
+
+.login-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.subtitle {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.loading-indicator {
+    margin-top: 2rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .accounting-feature {
+        padding: 1rem;
+    }
+    
+    .title-gradient {
+        font-size: 2rem;
+    }
+    
+    .accounting-card {
+        padding: 1rem;
+    }
+
+    .accounting-container {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+
+    .accounting-card {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .title-gradient {
+        font-size: 1.8rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .accounting-card {
+        padding: 1rem;
+    }
+
+    .accounting-feature {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .dashboard-logo {
+        width: 60px;
+    }
+
+    .login-box {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .status-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .status-item {
+        justify-content: center;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .date-time {
+        align-items: center;
+    }
+
+    .accounting-card li {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+}
+
+/* Enhanced Card Styles for Mobile */
+.accounting-card {
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: var(--transition-speed) ease;
+}
+
+.accounting-card li {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Smooth Page Transitions */
+.dashboard {
+    animation: fadeInScale 0.5s ease;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Enhanced Touch Interaction */
+@media (hover: none) {
+    .accounting-card:active {
+        transform: scale(0.98);
+    }
+
+    .accounting-card li:active {
+        background: #e8f5e9;
+    }
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-logo {
+    width: 80px;
+    height: auto;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.date-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+}
+
+/* Glass Effect */
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+}
+
+/* Status Bar */
+.status-bar {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--glass-bg);
+    border-radius: var(--card-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-item i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* Enhanced Animations */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.loading-animation {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Keep only the actions container styles */
+.actions-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.add-debt-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--gradient);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+}
+
+.add-debt-btn:hover {
+    transform: translateY(-2px);
+}
+
+.add-debt-btn i {
+    font-size: 1.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .add-debt-form {
+        margin: 1rem;
+        padding: 1rem;
+    }
+}

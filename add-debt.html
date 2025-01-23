@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة دين جديد - يسر</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/assets/styles/main.css">
+    <link rel="stylesheet" href="./src/assets/styles/add-debt.css">
+</head>
+<body>
+    <div class="add-debt-page">
+        <div class="add-debt-container glass-effect">
+            <header class="form-header">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    عودة للوحة التحكم
+                </a>
+                <h2>إضافة دين جديد</h2>
+            </header>
+            
+            <form id="debtForm" class="add-debt-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="debtAmount">المبلغ</label>
+                    <input type="number" id="debtAmount" required placeholder="أدخل المبلغ">
+                    <span class="currency">ريال</span>
+                </div>
+                <div class="form-group">
+                    <label for="debtorName">اسم المدين</label>
+                    <input type="text" id="debtorName" value="هيثم هتان" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="debtDate">التاريخ</label>
+                    <input type="date" id="debtDate" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">إضافة الدين</button>
+                    <a href="index.html" class="cancel-btn">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { debtService } from './services/debtService.js';
+
+        document.getElementById('debtForm').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const debt = {
+                name: document.getElementById('debtorName').value,
+                amount: document.getElementById('debtAmount').value,
+                date: document.getElementById('debtDate').value,
+                timestamp: new Date().getTime()
+            };
+
+            if (debtService.saveDebt(debt)) {
+                window.location.href = 'index.html?added=true';
+            } else {
+                alert('حدث خطأ في حفظ البيانات');
+            }
+        };
+
+        // تعيين التاريخ الحالي تلقائياً
+        document.getElementById('debtDate').valueAsDate = new Date();
+    </script>
+</body>
+</html>

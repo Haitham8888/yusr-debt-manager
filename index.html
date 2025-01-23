@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يسر - نظام إدارة الديون</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./src/assets/styles/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script type="module" src="./src/scripts/app.js" defer></script>
+    <script>
+        // تخطي صفحة تسجيل الدخول في التخزين المحلي
+        if (!localStorage.getItem('skipLogin')) {
+            localStorage.setItem('skipLogin', 'true');
+        }
+    </script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page glass-effect" id="loginPage">
+        <div class="login-container">
+            <div class="login-box fade-in">
+                <img src="./src/assets/img/logo.png" alt="يسر" class="logo pulse">
+                <h1>مرحباً بك في يسر</h1>
+                <p class="subtitle">نظام إدارة الديون الذكي</p>
+                <div class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>جاري تسجيل الدخول...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <main class="dashboard" id="dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header glass-effect">
+            <div class="header-content">
+                <img src="./src/assets/img/logo.png" alt="يسر" class="dashboard-logo">
+                <h1 class="title-gradient">نظام إدارة الديون</h1>
+                <div class="date-time">
+                    <span id="current-date"></span>
+                    <span id="current-time"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <section id="accounting-feature" class="accounting-feature">
+            <!-- Stats -->
+            <div class="status-bar">
+                <div class="status-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>إجمالي الديون: </span>
+                    <strong>25,000 ريال</strong>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>المدفوعات: </span>
+                    <strong>15,000 ريال</strong>
+                </div>
+            </div>
+
+            <!-- Cards Container -->
+            <div class="accounting-container">
+                <!-- Debts Card -->
+                <div class="accounting-card fade-in" data-type="ledger">
+                    <div class="card-header">
+                        <h3>دفتر الديون</h3>
+                        <span class="card-icon">📋</span>
+                    </div>
+                    <ul id="ledger-list">
+                        <li>
+                            <div class="list-item-content">
+                                <span>أحمد محمد</span>
+                                <span class="list-item-amount">1,500 ريال</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="list-item-content">
+                                <span>خالد عبدالله</span>
+                                <span class="list-item-amount">2,750 ريال</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Partial Payments Card -->
+                <div class="accounting-card fade-in" data-type="partial">
+                    <div class="card-header">
+                        <h3>المدفوع جزئياً</h3>
+                        <span class="card-icon">⚖️</span>
+                    </div>
+                    <ul id="partial-payments-list">
+                        <!-- Dynamic content will be inserted here -->
+                    </ul>
+                </div>
+
+                <!-- Deposits Card -->
+                <div class="accounting-card fade-in" data-type="deposit">
+                    <div class="card-header">
+                        <h3>العربون</h3>
+                        <span class="card-icon">💵</span>
+                    </div>
+                    <ul id="deposit-list">
+                        <!-- Dynamic content will be inserted here -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Add New Debt Button -->
+            <div class="actions-container">
+                <a href="./add-debt.html" class="add-debt-btn glass-effect">
+                    <i class="fas fa-plus"></i>
+                    إضافة دين جديد
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // دالة تخطي شاشة تسجيل الدخول
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        // التحقق من حالة تسجيل الدخول
+        if (localStorage.getItem('skipLogin')) {
+            // تأخير قصير لإظهار الشعار
+            setTimeout(showDashboard, 1000);
+        }
+
+        // تحديث التاريخ والوقت
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('ar-SA');
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('ar-SA');
+        }
+
+        // تحديث مستمر للوقت
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+    </script>
+
+    <!-- تحميل الخدمات والسكربتات -->
+    <script type="module" src="./src/services/debtService.js"></script>
+    <script type="module" src="./src/scripts/app.js"></script>
+</body>
+</html>
